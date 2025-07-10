@@ -16,7 +16,6 @@
             <input type="text" name="keyword" th:value="${keyword}">
             <button class="btn btn-outline-info">search
                 <i class="bi bi-search"></i>
-<!--                =>webjars bootstrap-icon dependency-->
             </button>
         </form>
         <table class="table table-bordered table-striped table-hover">
@@ -46,24 +45,20 @@
                         Supprimer
                         <i class="bi bi-trash"></i>
                     </a>
-                    <!-- Exemple d’édition (commenté si tu n’as pas encore la route) -->
-                    <!-- <a th:href="@{/patients/edit(id=${p.id})}" class="btn btn-primary btn-sm">Modifier</a> -->
                 </td>
             </tr>
             </tbody>
         </table>
 
         <ul class="nav nav-pills">
-<!--            forEche page from pages return item-->
+            <!--forEche page from pages return item-->
             <li th:each="page,item : ${pages}">
                 <a th:class="${item.index==currentPage?'btn btn-info ms-1':'btn btn-outline-info btn ms-1'}"
                    th:href="@{/index(page=${item.index},keyword=${keyword})}"
                    th:text="${item.index+1}"></a>
-<!--                pour commencer la pagination par 1-->
+                    <!--pour commencer la pagination par "1" dans l'affichage-->
             </li>
         </ul>
-        <!-- Bouton pour ajouter un nouveau patient -->
-        <!--<a href="/patients/new" class="btn btn-success">Ajouter un patient</a>-->
     </div>
 </div>
 

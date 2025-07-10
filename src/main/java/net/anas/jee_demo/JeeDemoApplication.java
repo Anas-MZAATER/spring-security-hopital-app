@@ -15,8 +15,6 @@ import java.util.List;
 public class JeeDemoApplication implements CommandLineRunner {
 
     @Autowired
-    //Injecter les dependance via une class springData creer par spring
-    // donc vous ne pas obliger de creer une class spring le creer pour vous
     private PatientRepository patientRepository;
 
     public static void main(String[] args) {
@@ -26,9 +24,7 @@ public class JeeDemoApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        //pour executer une code au demarage il suffit de l'ecrire ici
-// SPRING DATA
-        //ajouter des patient
+        //ajouter des patient VIA SPRING DATA
         patientRepository.save(new Patient(null, "reda", "rachid", new Date(), 100, false));
 
         Patient p1 = new Patient(null, "walid", "hamid", new Date(), 200, false);
@@ -43,7 +39,7 @@ public class JeeDemoApplication implements CommandLineRunner {
                     .build();
         patientRepository.save(p2);
 
-        //returner des patient
+        //returner des patient VIA SPRING DATA
         List<Patient> patients = patientRepository.findAll();
 
 //        for (Patient patient : patients) {
@@ -57,8 +53,6 @@ public class JeeDemoApplication implements CommandLineRunner {
 
 
 
-// SI J'AI BESOIN DES METHOD QUE N'EXISTE PAS DANS SPRING DATA
-//J'ALLER VERS L'INTERFACE patientRepository POUR L'AJOUTER
     }
 
 //===============================================2EME METHODE=============================================================//
