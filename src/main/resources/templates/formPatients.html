@@ -1,0 +1,154 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org"-->
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--      layout:decorate="template"-->
+<!--&gt;-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>formPatients</title>-->
+<!--</head>-->
+
+<!--<body class="bg-light text-dark container py-4">-->
+<!--<div layout:fragment="content1">-->
+<!--    <div class="col-md-6 offset-3">&lt;!&ndash;  offset :pour qu'il soit centrer&ndash;&gt;-->
+<!--    <form method="post" th:action="@{save}">-->
+<!--        <div>-->
+<!--            <label for="id">page :</label>-->
+<!--            <label id="id" th:text="${keyword}"></label>-->
+<!--            <label th:text="${page}"></label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <label for="nom">Nom</label>-->
+<!--            <input id="nom" class="form-control" type="text" name="nom" th:value="${patient.nom}">-->
+<!--            <span class="text-danger" th:errors="${patient.nom}"></span>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <label>date Naissance</label>-->
+<!--            <input class="form-control" type="date" name="dateNaissance" th:value="${patient.dateNaissance}">-->
+<!--            <span class="text-danger" th:errors="${patient.dateNaissance}"></span>-->
+<!--        </div>-->
+<!--        <div class="form-check mb-3">-->
+<!--            <label class="form-check-label">Malade</label>-->
+<!--            <input class="form-check-input" type="checkbox" name="malade" th:checked="${patient.malade}">-->
+<!--            <span class="text-danger" th:errors="${patient.malade}"></span>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <label>Score</label>-->
+<!--            <input class="form-control" type="text" name="score" th:value="${patient.score}">-->
+<!--            <span class="text-danger" th:errors="${patient.score}"></span>-->
+<!--        </div>-->
+<!--&lt;!&ndash;        &lt;!&ndash; Champs cachés pour passer `keyword` et `page` &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" name="keyword" th:value="${keyword}" />&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" name="page" th:value="${page}" />&ndash;&gt;-->
+<!--        &lt;!&ndash; Bouton de soumission &ndash;&gt;-->
+<!--        <button type="submit" class="btn btn-primary">save</button>-->
+<!--    </form>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<!--</body>-->
+<!--</html>-->
+<!--====================bien styler============================================-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter un patient</title>
+</head>
+
+<body>
+<div layout:fragment="content1" class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">Formulaire Patient</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" th:action="@{savePatient}" th:object="${patient}">
+
+                        <!-- Informations de page -->
+                        <div class="mb-3 text-muted small">
+                            <label>Page : </label>
+                            <span th:text="${keyword}"></span>
+                            <span th:text="${page}"></span>
+                        </div>
+<!--                        &lt;!&ndash; Champs cachés pour passer `keyword` et `page` &ndash;&gt;-->
+<!--                        <input type="hidden" name="keyword" th:value="${keyword}" />-->
+<!--                        <input type="hidden" name="page" th:value="${page}" />-->
+
+                        <!-- Aide et documentation -->
+                        <div class="text-center mt-4 text-muted small">
+                            <small class="text-danger">Champs obligatoires: *</small>
+                        </div>
+
+                        <!-- CSRF protection-->
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+                        <!-- Nom -->
+                        <div class="mb-3">
+                            <label for="nom" class="form-label">Nom<span class="text-danger">*</span></label>
+                            <input id="nom" name="nom" class="form-control" type="text" th:value="${patient.nom}" required>
+                            <div class="text-danger small" th:errors="${patient.nom}"></div>
+                        </div>
+
+                        <!-- Prenom -->
+                        <div class="mb-3">
+                            <label for="prenom" class="form-label">Prénom<span class="text-danger">*</span></label>
+                            <input id="prenom" name="prenom" class="form-control" type="text" th:field="${patient.prenom}">
+                            <div class="text-danger small" th:errors="${patient.prenom}"></div>
+                        </div>
+
+                        <!-- Date de naissance -->
+                        <div class="mb-3">
+                            <label for="dateNaissance" class="form-label">Date de naissance</label>
+                            <input id="dateNaissance" name="dateNaissance" class="form-control" type="date" th:field="*{dateNaissance}">
+                            <div class="text-danger small" th:errors="*{dateNaissance}"></div>
+                        </div>
+
+                        <!-- Score -->
+                        <div class="mb-3">
+                            <label for="score" class="form-label">Score <span class="text-danger">*</span> </label>
+                            <input id="score" name="score" class="form-control" type="text" th:field="*{score}">
+                            <div class="text-danger small" th:errors="*{score}"></div>
+                        </div>
+
+                        <!-- Malade -->
+                        <div class="mb-3 d-flex justify-content align-items">
+                            <label for="malade" class="form-check-label me-3">Malade<span class="text-danger">*</span></label>
+                            <input id="malade" name="malad" class="form-check-input" type="checkbox" th:field="${patient.malade}">
+                            <div class="text-danger small ms-2" th:errors="*{malade}"></div>
+                        </div>
+<!--                        <div class="mb-3">-->
+<!--                            <label for="malade" class="form-label">Malade</label>-->
+<!--                            <select class="form-control" id="malade" name="malade" required>-->
+<!--                                <option value="true">Oui</option>-->
+<!--                                <option value="false">Non</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+                        <!-- Bouton de soumission -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-save"></i> Enregistrer
+                            </button>
+                        </div>
+                    </form>
+
+                        <button class="btn btn-danger btn-lg">
+                            <i class="bi bi-save"></i><a class="nav-link active" th:href="@{/patients}">Cancel</a>
+                        </button>
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

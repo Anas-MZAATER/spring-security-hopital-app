@@ -72,6 +72,12 @@
             <artifactId>bootstrap</artifactId>
             <version>5.3.3</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.webjars.npm/bootstrap-icons -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>bootstrap-icons</artifactId>
+            <version>1.13.1</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -84,6 +90,11 @@
             <groupId>nz.net.ultraq.thymeleaf</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
             <!--            <version>3.4.0</version> // c'est pas lapelle a presiser la version, spring boot choisir la version a proprier-->
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
     </dependencies>
 

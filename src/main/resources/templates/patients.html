@@ -1,67 +1,635 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org"-->
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--        layout:decorate="template">-->
+<!--<head>-->
+<!--    <title>Patients</title>-->
+<!--</head>-->
+<!--<body class="">-->
+<!--<div layout:fragment="content1">-->
+<!--<div class="container bg-light mt-2">-->
+<!--    <div class="card">-->
+<!--        <div class="card-header">-->
+<!--            <h3 class="mb-0">Liste des Patients</h3>-->
+<!--        </div>-->
+<!--        <div class="card-body">-->
+<!--    &lt;!&ndash;        formulaire de recherche&ndash;&gt;-->
+<!--            <form method="get" th:action="@{/index}">-->
+<!--                <label>keyword</label>-->
+<!--                <input type="text" name="keyword" th:value="${keyword}">-->
+<!--                <button class="btn btn-outline-info">search-->
+<!--                    <i class="bi bi-search"></i>&lt;!&ndash;=>webjars bootstrap-icon dependency&ndash;&gt;-->
+<!--                </button>-->
+<!--            </form>-->
+<!--            <table class="table table-bordered table-striped table-hover">-->
+<!--                <thead class="table-dark">-->
+<!--                <tr>-->
+<!--                    <th>ID</th><th>Nom</th><th>Prénom</th><th>Date de naissance</th><th>Score</th><th>Malade</th><th>Actions</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <tr th:each="p : ${listePatients}">-->
+<!--                    <td th:text="${p.id}"></td><td th:text="${p.nom}"></td><td th:text="${p.prenom}"></td><td th:text="${p.dateNaissance}"></td><td th:text="${p.score}"></td><td th:text="${p.Malade}"></td>-->
+<!--                    <td>-->
+<!--                        <a onclick="javascript:return confirm('Est-ce que vous êtes sûr ?')"-->
+<!--                           class="btn btn-danger"-->
+<!--                           th:href="@{/deletePatient(id=${p.id},keyword=${keyword},page=${currentPage})}">-->
+<!--                            Supprimer-->
+<!--                            <i class="bi bi-trash"></i>&lt;!&ndash;=>webjars bootstrap-icon dependency&ndash;&gt;-->
+<!--                        </a>-->
+<!--                        &lt;!&ndash; Exemple d’édition (commenté si tu n’as pas encore la route) &ndash;&gt;-->
+<!--                        &lt;!&ndash; <a th:href="@{/patients/edit(id=${p.id})}" class="btn btn-primary btn-sm">Modifier</a> &ndash;&gt;-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--            </table>-->
+
+<!--            &lt;!&ndash; pied de pagination&ndash;&gt;-->
+<!--            <ul class="nav nav-pills">-->
+<!--                &lt;!&ndash;forEche page from pages return item&ndash;&gt;-->
+<!--                <li th:each="page,item : ${pages}">-->
+<!--                    <a th:class="${item.index==currentPage?'btn btn-info ms-1':'btn btn-outline-info btn ms-1'}"-->
+<!--                       th:href="@{/index(page=${item.index},keyword=${keyword})}"-->
+<!--                       th:text="${item.index+1}"></a>-->
+<!--                        &lt;!&ndash;pour commencer la pagination par 1&ndash;&gt;-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--            &lt;!&ndash; Bouton pour ajouter un nouveau patient &ndash;&gt;-->
+<!--            &lt;!&ndash;<a href="/patients/new" class="btn btn-success">Ajouter un patient</a>&ndash;&gt;-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+<!--==========================bien styler============================================-->
+
+
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="template">
 <head>
     <meta charset="UTF-8">
     <title>Patients</title>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}">
 </head>
-<body class="bg-light text-dark container py-4">
-<div class="card">
-    <div class="card-header">
-        <h3 class="mb-0">Liste des Patients</h3>
-    </div>
-    <div class="card-body">
-        <form method="get" th:action="@{/index}">
-            <label>keyword</label>
-            <input type="text" name="keyword" th:value="${keyword}">
-            <button class="btn btn-outline-info">search
-                <i class="bi bi-search"></i>
-            </button>
-        </form>
-        <table class="table table-bordered table-striped table-hover">
-            <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Date de naissance</th>
-                <th>Score</th>
-                <th>Malade</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="p : ${listePatients}">
-                <td th:text="${p.id}"></td>
-                <td th:text="${p.nom}"></td>
-                <td th:text="${p.prenom}"></td>
-                <td th:text="${p.dateNaissance}"></td>
-                <td th:text="${p.score}"></td>
-                <td th:text="${p.malade}"></td>
-                <td>
-                    <a onclick="javascript:return confirm('Est-ce que vous êtes sûr ?')"
-                       class="btn btn-danger"
-                       th:href="@{/deletePatient(id=${p.id},keyword=${keyword},page=${currentPage})}">
-                        Supprimer
-                        <i class="bi bi-trash"></i>
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+<body>
+<div layout:fragment="content1">
+    <div class="container mt-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Liste des Patients</h3>
+            </div>
+            <div class="card-body">
 
-        <ul class="nav nav-pills">
-            <!--forEche page from pages return item-->
-            <li th:each="page,item : ${pages}">
-                <a th:class="${item.index==currentPage?'btn btn-info ms-1':'btn btn-outline-info btn ms-1'}"
-                   th:href="@{/index(page=${item.index},keyword=${keyword})}"
-                   th:text="${item.index+1}"></a>
-                    <!--pour commencer la pagination par "1" dans l'affichage-->
-            </li>
-        </ul>
+                <!-- formulaire de recherche -->
+                <div class="mb-4">
+                    <form class="row g-3 align-items-center" method="get" th:action="@{/patients}">
+                        <div class="col-auto">
+                            <label for="keyword" class="form-label">Rechercher</label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="text" id="keyword" class="form-control" name="keyword" th:value="${keyword}">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-outline-info">
+                                <i class="bi bi-search"></i> Rechercher
+                            </button>
+                            <!-- Bouton pour ajouter un nouveau patient -->
+                            <a th:href="@{/formPatients}" class="btn btn-success">
+                                <i class="bi bi-plus-circle"></i> Ajouter un patient
+                            </a>
+
+                        </div>
+
+                    </form>
+
+
+                </div>
+
+                <!-- Tableau des patients -->
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Date de naissance</th>
+                            <th>Score</th>
+                            <th>Malade</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="p : ${listePatients}">
+                            <td th:text="${p.id}"></td>
+                            <td th:text="${p.nom}"></td>
+                            <td th:text="${p.prenom}"></td>
+                            <td th:text="${p.dateNaissance}"></td>
+                            <td th:text="${p.score}"></td>
+                            <td th:text="${p.Malade}"></td>
+                            <td>
+                                <!--//////////////////////confirmation via javascript alert////////////////////-->
+                                <!--<a onclick="javascript:return confirm('Est-ce que vous êtes sûr ?')"-->
+                                <!--class="btn btn-danger"-->
+                                <!--th:href="@{/deletePatient(id=${p.id},keyword=${keyword},page=${currentPage})}">-->
+                                <!--Supprimer-->
+                                <!--<i class="bi bi-trash"></i>-->
+                                <!--</a>-->
+                                <!--//////////////////////confirmation via modal////////////////////-->
+                                <a class="btn btn-danger"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#deleteModal"
+                                   th:data-id="${p.id}"
+                                   th:data-page="${currentPage}"
+                                   th:data-keyword="${keyword}">
+                                    Supprimer
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                                <a th:href="@{/editPatient(id=${p.id},keyword=${keyword},page=${currentPage})}"
+                                   class="btn btn-sm btn-primary ms-2">
+                                    <i class="bi bi-pencil"></i> Modifier
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Page navigation" class="mt-3">
+                    <ul class="pagination justify-content-center">
+                        <!--forEche page from pages return item-->
+                        <li th:each="page,item : ${pages}">
+                            <a th:class="${item.index==currentPage?'btn btn-info ms-1':'btn btn-outline-info btn ms-1'}"
+                               th:href="@{/patients(page=${item.index},keyword=${keyword})}"
+                               th:text="${item.index+1}"></a>
+                            <!--pour commencer la pagination par 1-->
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </div>
 </div>
 
-<!--<script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>-->
+
+
 </body>
 </html>
+
+
+
+<!--=====================avec formulaire/Model d'ajoute=============================-->
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="template">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Patients</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div layout:fragment="content1">-->
+<!--    <div class="container mt-4">-->
+<!--        <div class="card shadow-sm">-->
+<!--            <div class="card-header bg-primary text-white">-->
+<!--                <h3 class="mb-0">Liste des Patients</h3>-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+
+
+
+<!--                &lt;!&ndash; formulaire de recherche &ndash;&gt;-->
+<!--                <div class="mb-4">-->
+<!--                    <form class="row g-3 align-items-center" method="get" th:action="@{/patients}">-->
+<!--                        <div class="col-auto">-->
+<!--                            <input type="text" id="keyword" class="form-control" name="keyword" th:value="${keyword}" placeholder="Rechercher . . .">-->
+<!--                        </div>-->
+<!--                        <div class="col-auto">-->
+<!--                            <button type="submit" class="btn btn-outline-info">-->
+<!--                                <i class="bi bi-search"></i> Rechercher-->
+<!--                            </button>-->
+<!--                            &lt;!&ndash; Bouton pour ajouter un nouveau patient en ouvrant une modal &ndash;&gt;-->
+<!--                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addPatientModal">-->
+<!--                                <i class="bi bi-plus-circle"></i> Ajouter un patient-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                    </form>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Tableau des patients &ndash;&gt;-->
+<!--                <div class="table-responsive">-->
+<!--                    <table class="table table-bordered table-striped">-->
+<!--                        <thead class="table-dark">-->
+<!--                        <tr>-->
+<!--                            <th>ID</th>-->
+<!--                            <th>Nom</th>-->
+<!--                            <th>Prénom</th>-->
+<!--                            <th>Date de naissance</th>-->
+<!--                            <th>Score</th>-->
+<!--                            <th>Malade</th>-->
+<!--                            <th>Actions</th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                        <tr th:each="p : ${listePatients}">-->
+<!--                            <td th:text="${p.id}"></td>-->
+<!--                            <td th:text="${p.nom}"></td>-->
+<!--                            <td th:text="${p.prenom}"></td>-->
+<!--                            <td th:text="${p.dateNaissance}"></td>-->
+<!--                            <td th:text="${p.score}"></td>-->
+<!--                            <td th:text="${p.Malade}"></td>-->
+<!--                            <td>-->
+<!--                                <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce patient ?')"-->
+<!--                                   class="btn btn-sm btn-danger"-->
+<!--                                   th:href="@{/deletePatient(id=${p.id},keyword=${keyword},page=${currentPage})}">-->
+<!--                                    <i class="bi bi-trash"></i> Supprimer-->
+<!--                                </a>-->
+<!--&lt;!&ndash;                                <a th:href="@{/patients/edit(id=${p.id},keyword=${keyword},page=${currentPage})}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   class="btn btn-sm btn-primary ms-2">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <i class="bi bi-pencil"></i> Modifier&ndash;&gt;-->
+<!--&lt;!&ndash;                                </a>&ndash;&gt;-->
+<!--                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editPatientModal">-->
+<!--                                    <i class="bi bi-pencil-square"></i> Modifier-->
+<!--                                </button>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Pagination &ndash;&gt;-->
+<!--                <nav aria-label="Page navigation" class="mt-3">-->
+<!--                    <ul class="pagination justify-content-center">-->
+<!--                        &lt;!&ndash;forEche page from pages return item&ndash;&gt;-->
+<!--                        <li th:each="page,item : ${pages}">-->
+<!--                            <a th:class="${item.index==currentPage?'btn btn-info ms-1':'btn btn-outline-info btn ms-1'}"-->
+<!--                               th:href="@{/patients(page=${item.index},keyword=${keyword})}"-->
+<!--                               th:text="${item.index+1}"></a>-->
+<!--                            &lt;!&ndash;pour commencer la pagination par 1&ndash;&gt;-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </nav>-->
+
+
+
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Modal pour ajouter un patient &ndash;&gt;-->
+<!--    <div class="modal fade" id="addPatientModal" tabindex="-1" aria-labelledby="addPatientModalLabel" aria-hidden="true">-->
+<!--        <div class="modal-dialog">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <h5 class="modal-title" id="addPatientModalLabel">Ajouter un patient</h5>-->
+<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+<!--                    &lt;!&ndash; formulaire d'ajout de patient &ndash;&gt;-->
+<!--                    <form th:action="@{/savePatient}" th:object="${patient}" method="post">-->
+
+<!--&lt;!&ndash;                        &lt;!&ndash; Champs cachés pour passer `keyword` et `page` &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                        <input type="hidden" name="keyword" th:value="${keyword}" />&ndash;&gt;-->
+<!--&lt;!&ndash;                        <input type="hidden" name="page" th:value="${page}" />&ndash;&gt;-->
+
+<!--                        &lt;!&ndash; Informations de page &ndash;&gt;-->
+<!--                        <div class="mb-3 text-muted small">-->
+<!--                            <label>Page : </label>-->
+<!--                            <span th:text="${keyword}"></span>-->
+<!--                            <span th:text="${page}"></span>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Aide et documentation &ndash;&gt;-->
+<!--                        <div class="text-center mb-3 text-muted small">-->
+<!--                            <small class="text-danger">Champs obligatoires: *</small>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; CSRF protection&ndash;&gt;-->
+<!--                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />-->
+
+<!--                        &lt;!&ndash; Nom &ndash;&gt;-->
+<!--                        <div class="mb-3">-->
+<!--                            <label for="nom" class="form-label">Nom<span class="text-danger">*</span></label>-->
+<!--                            <input id="nom" class="form-control" type="text" th:field="*{nom}">-->
+<!--                            <div class="text-danger small" th:errors="*{nom}"></div>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Prenom &ndash;&gt;-->
+<!--                        <div class="mb-3">-->
+<!--                            <label for="prenom" class="form-label">Prénom<span class="text-danger">*</span></label>-->
+<!--                            <input id="prenom" class="form-control" type="text" th:field="*{prenom}">-->
+<!--                            <div class="text-danger small" th:errors="*{prenom}"></div>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Date de naissance &ndash;&gt;-->
+<!--                        <div class="mb-3">-->
+<!--                            <label for="dateNaissance" class="form-label">Date de naissance</label>-->
+<!--&lt;!&ndash;                            Le champ dateNaissance pourrait avoir max pour éviter les dates futures :&ndash;&gt;-->
+<!--                            <input id="dateNaissance" class="form-control" type="date" th:field="*{dateNaissance}" max="{{today}}">-->
+<!--                            <div class="text-danger small" th:errors="*{dateNaissance}"></div>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Score &ndash;&gt;-->
+<!--                        <div class="mb-3">-->
+<!--                            <label for="score" class="form-label">Score <span class="text-danger">*</span> </label>-->
+<!--                            <input id="score" class="form-control" type="text" th:field="*{score}">-->
+<!--                            <div class="text-danger small" th:errors="*{score}"></div>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Malade &ndash;&gt;-->
+<!--                        <div class="mb-3 d-flex justify-content align-items">-->
+<!--                            <label for="malade" class="form-check-label me-3">Malade<span class="text-danger">*</span></label>-->
+<!--                            <input class="form-check-input" type="checkbox" id="malade" th:field="*{malade}">-->
+<!--                            <div class="text-danger small ms-2" th:errors="*{malade}"></div>-->
+<!--                        </div>-->
+
+<!--                        <div class="modal-footer">-->
+<!--                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>-->
+<!--                            <button type="submit" class="btn btn-primary">Enregistrer</button>-->
+<!--                        </div>-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--</div>-->
+<!--&lt;!&ndash;                        <div class="mb-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <label for="malade" class="form-label">Malade</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <select class="form-control" id="malade" name="malade" required>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <option value="true">Oui</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <option value="false">Non</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </select>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+
+
+
+
+<!--</body>-->
+<!--</html>-->
+
+<!--=============================edit model==================================-->
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="template">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Patients</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div layout:fragment="content1">-->
+<!--    <div class="container mt-4">-->
+<!--        <div class="card shadow-sm">-->
+<!--            <div class="card-header bg-primary text-white">-->
+<!--                <h3 class="mb-0">Liste des Patients</h3>-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+
+
+
+<!--                &lt;!&ndash; formulaire de recherche &ndash;&gt;-->
+<!--                <div class="mb-4">-->
+<!--                    <form class="row g-3 align-items-center" method="get" th:action="@{/patients}">-->
+<!--                        <div class="col-auto">-->
+<!--                            <input type="text" id="keyword" class="form-control" name="keyword" th:value="${keyword}" placeholder="Rechercher . . .">-->
+<!--                        </div>-->
+<!--                        <div class="col-auto">-->
+<!--                            <button type="submit" class="btn btn-outline-info">-->
+<!--                                <i class="bi bi-search"></i> Rechercher-->
+<!--                            </button>-->
+<!--                            &lt;!&ndash; Bouton pour ajouter un nouveau patient en ouvrant une modal &ndash;&gt;-->
+<!--                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addPatientModal">-->
+<!--                                <i class="bi bi-plus-circle"></i> Ajouter un patient-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                    </form>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Tableau des patients &ndash;&gt;-->
+<!--                <div class="table-responsive">-->
+<!--                    <table class="table table-bordered table-striped">-->
+<!--                        <thead class="table-dark">-->
+<!--                        <tr>-->
+<!--                            <th>ID</th>-->
+<!--                            <th>Nom</th>-->
+<!--                            <th>Prénom</th>-->
+<!--                            <th>Date de naissance</th>-->
+<!--                            <th>Score</th>-->
+<!--                            <th>Malade</th>-->
+<!--                            <th>Actions</th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                        <tr th:each="p : ${listePatients}">-->
+<!--                            <td th:text="${p.id}"></td>-->
+<!--                            <td th:text="${p.nom}"></td>-->
+<!--                            <td th:text="${p.prenom}"></td>-->
+<!--                            <td th:text="${p.dateNaissance}"></td>-->
+<!--                            <td th:text="${p.score}"></td>-->
+<!--                            <td th:text="${p.Malade}"></td>-->
+<!--                            <td>-->
+<!--                                <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce patient ?')"-->
+<!--                                   class="btn btn-sm btn-danger"-->
+<!--                                   th:href="@{/deletePatient(id=${p.id},keyword=${keyword},page=${currentPage})}">-->
+<!--                                    <i class="bi bi-trash"></i> Supprimer-->
+<!--                                </a>-->
+<!--                                &lt;!&ndash;                                <a th:href="@{/patients/edit(id=${p.id},keyword=${keyword},page=${currentPage})}"&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                   class="btn btn-sm btn-primary ms-2">&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                    <i class="bi bi-pencil"></i> Modifier&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                </a>&ndash;&gt;-->
+<!--                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editPatientModal">-->
+<!--                                    <i class="bi bi-pencil-square"></i> Modifier-->
+<!--                                </button>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Pagination &ndash;&gt;-->
+<!--                <nav aria-label="Page navigation" class="mt-3">-->
+<!--                    <ul class="pagination justify-content-center">-->
+<!--                        &lt;!&ndash;forEche page from pages return item&ndash;&gt;-->
+<!--                        <li th:each="page,item : ${pages}">-->
+<!--                            <a th:class="${item.index==currentPage?'btn btn-info ms-1':'btn btn-outline-info btn ms-1'}"-->
+<!--                               th:href="@{/patients(page=${item.index},keyword=${keyword})}"-->
+<!--                               th:text="${item.index+1}"></a>-->
+<!--                            &lt;!&ndash;pour commencer la pagination par 1&ndash;&gt;-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </nav>-->
+
+
+
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Modal pour ajouter un patient &ndash;&gt;-->
+<!--    <div class="modal fade" id="addPatientModal" tabindex="-1" aria-labelledby="addPatientModalLabel" aria-hidden="true">-->
+<!--        <div class="modal-dialog">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <h5 class="modal-title" id="addPatientModalLabel">Ajouter un patient</h5>-->
+<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+<!--                    &lt;!&ndash; formulaire d'ajout de patient &ndash;&gt;-->
+<!--                    <form th:action="@{/savePatient}" th:object="${patient}" method="post">-->
+
+<!--                        &lt;!&ndash;                        &lt;!&ndash; Champs cachés pour passer `keyword` et `page` &ndash;&gt;&ndash;&gt;-->
+<!--                        &lt;!&ndash;                        <input type="hidden" name="keyword" th:value="${keyword}" />&ndash;&gt;-->
+<!--                        &lt;!&ndash;                        <input type="hidden" name="page" th:value="${page}" />&ndash;&gt;-->
+
+<!--                        &lt;!&ndash; Informations de page &ndash;&gt;-->
+<!--                        <div class="mb-3 text-muted small">-->
+<!--                            <label>Page : </label>-->
+<!--                            <span th:text="${keyword}"></span>-->
+<!--                            <span th:text="${page}"></span>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Aide et documentation &ndash;&gt;-->
+<!--                        <div class="text-center mb-3 text-muted small">-->
+<!--                            <small class="text-danger">Champs obligatoires: *</small>-->
+<!--                        </div>-->
+<!--                    -->
+<!--                        &lt;!&ndash; CSRF protection&ndash;&gt;-->
+<!--                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />-->
+
+<!--                        &lt;!&ndash; Nom &ndash;&gt;-->
+<!--                        <div class="mb-3">-->
+<!--                            <label for="nom" class="form-label">Nom<span class="text-danger">*</span></label>-->
+<!--                            <input id="nom" class="form-control" type="text" th:field="*{nom}">-->
+<!--                            <div class="text-danger small" th:errors="*{nom}"></div>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Prenom &ndash;&gt;-->
+<!--                        <div class="mb-3">-->
+<!--                            <label for="prenom" class="form-label">Prénom<span class="text-danger">*</span></label>-->
+<!--                            <input id="prenom" class="form-control" type="text" th:field="*{prenom}">-->
+<!--                            <div class="text-danger small" th:errors="*{prenom}"></div>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Date de naissance &ndash;&gt;-->
+<!--                        <div class="mb-3">-->
+<!--                            <label for="dateNaissance" class="form-label">Date de naissance</label>-->
+<!--                            &lt;!&ndash;                            Le champ dateNaissance pourrait avoir max pour éviter les dates futures :&ndash;&gt;-->
+<!--                            <input id="dateNaissance" class="form-control" type="date" th:field="*{dateNaissance}" max="{{today}}">-->
+<!--                            <div class="text-danger small" th:errors="*{dateNaissance}"></div>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Score &ndash;&gt;-->
+<!--                        <div class="mb-3">-->
+<!--                            <label for="score" class="form-label">Score <span class="text-danger">*</span> </label>-->
+<!--                            <input id="score" class="form-control" type="text" th:field="*{score}">-->
+<!--                            <div class="text-danger small" th:errors="*{score}"></div>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Malade &ndash;&gt;-->
+<!--                        <div class="mb-3 d-flex justify-content align-items">-->
+<!--                            <label for="malade" class="form-check-label me-3">Malade<span class="text-danger">*</span></label>-->
+<!--                            <input class="form-check-input" type="checkbox" id="malade" th:field="*{malade}">-->
+<!--                            <div class="text-danger small ms-2" th:errors="*{malade}"></div>-->
+<!--                        </div>-->
+
+<!--                        <div class="modal-footer">-->
+<!--                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>-->
+<!--                            <button type="submit" class="btn btn-primary">Enregistrer</button>-->
+<!--                        </div>-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--</div>-->
+<!--&lt;!&ndash;                        <div class="mb-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <label for="malade" class="form-label">Malade</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <select class="form-control" id="malade" name="malade" required>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <option value="true">Oui</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <option value="false">Non</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </select>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+
+
+<!--&lt;!&ndash; Modal pour modifier un patient &ndash;&gt;-->
+<!--<div class="modal fade" id="editPatientModal" tabindex="-1" aria-labelledby="editPatientModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+<!--            <form method="post" th:action="@{/savePatient}" th:object="${editPatient}">-->
+<!--                <div class="modal-header bg-primary text-white">-->
+<!--                    <h5 class="modal-title" id="editPatientModalLabel">Modifier le patient</h5>-->
+<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+
+<!--                    &lt;!&ndash; Champs cachés &ndash;&gt;-->
+<!--                    <input type="hidden" name="id" th:field="*{id}">-->
+<!--                    <input type="hidden" name="keyword" th:value="${keyword}">-->
+<!--                    <input type="hidden" name="page" th:value="${page}">-->
+
+<!--                    &lt;!&ndash; CSRF protection&ndash;&gt;-->
+<!--                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />-->
+<!--                    &lt;!&ndash; Nom &ndash;&gt;-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="editNom" class="form-label">Nom <span class="text-danger">*</span></label>-->
+<!--                        <input id="editNom" class="form-control" type="text" th:field="*{nom}" required>-->
+<!--                        <div class="text-danger small" th:errors="*{nom}"></div>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Prénom &ndash;&gt;-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="editPrenom" class="form-label">Prénom <span class="text-danger">*</span></label>-->
+<!--                        <input id="editPrenom" class="form-control" type="text" th:field="*{prenom}" required>-->
+<!--                        <div class="text-danger small" th:errors="*{prenom}"></div>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Date de naissance &ndash;&gt;-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="editDateNaissance" class="form-label">Date de naissance</label>-->
+<!--                        <input id="editDateNaissance" class="form-control" type="date" th:field="*{dateNaissance}">-->
+<!--                        <div class="text-danger small" th:errors="*{dateNaissance}"></div>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Score &ndash;&gt;-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="editScore" class="form-label">Score <span class="text-danger">*</span></label>-->
+<!--                        <input id="editScore" class="form-control" type="number" th:field="*{score}" required>-->
+<!--                        <div class="text-danger small" th:errors="*{score}"></div>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Malade &ndash;&gt;-->
+<!--                    <div class="mb-3 form-check">-->
+<!--                        <input id="editMalade" class="form-check-input" type="checkbox" th:field="*{malade}">-->
+<!--                        <label for="editMalade" class="form-check-label">Malade</label>-->
+<!--                        <div class="text-danger small" th:errors="*{malade}"></div>-->
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--                <div class="modal-footer">-->
+<!--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>-->
+<!--                    <button type="submit" class="btn btn-primary">Enregistrer</button>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash;<script th:inline="javascript">&ndash;&gt;-->
+<!--&lt;!&ndash;    /* Afficher la modal automatiquement s'il y a des erreurs */&ndash;&gt;-->
+<!--&lt;!&ndash;    /* 'hasErrors' est une variable que tu peux envoyer depuis ton contrôleur */&ndash;&gt;-->
+<!--&lt;!&ndash;    /* Exemple côté Java : model.addAttribute("hasErrors", true); */&ndash;&gt;-->
+<!--&lt;!&ndash;    /* Il faut aussi bien s'assurer que 'patient' est rempli même en cas d'erreur */&ndash;&gt;-->
+<!--&lt;!&ndash;    /* dans le contrôleur savePatient */&ndash;&gt;-->
+
+<!--&lt;!&ndash;    /* Script Thymeleaf */&ndash;&gt;-->
+<!--&lt;!&ndash;    /* Ce script va ouvrir automatiquement la modal si des erreurs sont présentes */&ndash;&gt;-->
+<!--&lt;!&ndash;    /* Nécessite Bootstrap JS actif */&ndash;&gt;-->
+<!--&lt;!&ndash;    /* Vérifie si hasErrors existe et vaut true */&ndash;&gt;-->
+<!--&lt;!&ndash;    /* Cela fonctionne si tu renvoies vers la page sans faire de redirect */&ndash;&gt;-->
+<!--&lt;!&ndash;    [[${hasErrors} ? '$("#addPatientModal").modal("show");' : '']]&ndash;&gt;-->
+<!--&lt;!&ndash;    /* Ouvre automatiquement la modal d'édition si on revient avec l'attribut `openEditModal` */&ndash;&gt;-->
+<!--&lt;!&ndash;    [[${openEditModal} ? '$("#editPatientModal").modal("show");' : '']];&ndash;&gt;-->
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+
+<!--</body>-->
+<!--</html>-->
