@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>Patients</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/1.13.1/font/bootstrap-icons.css}">
 </head>
 <body>
 <!-- Grey with black text -->
@@ -82,7 +83,7 @@
 
 
 
-<!--/////////////notification modal///////////////////////-->
+<!--/////////////notification toast/composant toast pour les notifications///////////////////////-->
 <div aria-live="polite" aria-atomic="true" class="toast-container position-fixed bottom-0 end-0 p-3">
     <div id="messageToast"
          th:classappend="${errorMessage} ? ' text-bg-danger' : ' text-bg-success'"

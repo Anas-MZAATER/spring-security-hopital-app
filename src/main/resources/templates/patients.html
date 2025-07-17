@@ -126,24 +126,24 @@
                             <td th:text="${p.prenom}"></td>
                             <td th:text="${p.dateNaissance}"></td>
                             <td th:text="${p.score}"></td>
-                            <td th:text="${p.Malade}"></td>
+                            <td th:text="${p.malade}"></td>
                             <td>
-                                <!--//////////////////////confirmation via javascript alert////////////////////-->
+                            <!--//////////////////////confirmation via javascript alert////////////////////-->
                                 <!--<a onclick="javascript:return confirm('Est-ce que vous êtes sûr ?')"-->
                                 <!--class="btn btn-danger"-->
                                 <!--th:href="@{/deletePatient(id=${p.id},keyword=${keyword},page=${currentPage})}">-->
                                 <!--Supprimer-->
                                 <!--<i class="bi bi-trash"></i>-->
                                 <!--</a>-->
-                                <!--//////////////////////confirmation via modal////////////////////-->
+                            <!--//////////////////////confirmation via modal////////////////////-->
                                 <a class="btn btn-danger"
                                    data-bs-toggle="modal"
                                    data-bs-target="#deleteModal"
                                    th:data-id="${p.id}"
                                    th:data-page="${currentPage}"
                                    th:data-keyword="${keyword}">
-                                    Supprimer
                                     <i class="bi bi-trash"></i>
+                                    Supprimer
                                 </a>
                                 <a th:href="@{/editPatient(id=${p.id},keyword=${keyword},page=${currentPage})}"
                                    class="btn btn-primary ms-2">
@@ -155,7 +155,7 @@
                     </table>
                 </div>
 
-                <!-- Pagination -->
+                <!-- nav de Pagination -->
                 <nav aria-label="Page navigation" class="mt-3">
                     <ul class="pagination justify-content-center">
                         <!--forEche page from pages return item-->
